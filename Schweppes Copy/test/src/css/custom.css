@@ -27,9 +27,7 @@ body {
 .flex-quarter {
   flex: 1 0 25%;
 }
-.hide {
-  opacity: 0;
-}
+
 .gooey_bubble {
   clip-path: url("#home-experiences");
 }
@@ -116,6 +114,9 @@ body {
   box-sizing: content-box;
   background-color: transparent;
   font-size: 0.7rem;
+}
+.c-scroll.is_active {
+  opacity: 1;
 }
 .dropdown-toggle.is_active * {
   color: #ffe500;
@@ -414,8 +415,9 @@ body {
 #dropdown1 a:hover {
   color: #fff;
 }
-#dropdown1 li:nth-child(1):hover {
-  --bg-color: ;
+#dropdown1 .products {
+  right: -10rem;
+  bottom: -10rem;
 }
 #dropdown1 .products svg {
   transition: 0.4s linear;
@@ -434,18 +436,34 @@ body {
 }
 
 #dropdown1 .product_img_cover div {
-  animation: 5s linear alternate infinite;
+  transform-origin: bottom;
+  animation: 3s ease-in-out alternate infinite;
   animation-name: product_animation;
 }
-
+#dropdown1 .product_img_cover img {
+  animation: 3s ease-in-out alternate infinite;
+  animation-name: img_animation;
+}
 @keyframes product_animation {
   0% {
-    transform: rotate(10deg) translate(10px, 20px);
+    transform: rotate(8deg);
   }
-  50% {
-    transform: rotate(0deg) translate(0, 0);
-  }
+
   100% {
-    transform: rotate(-10deg) translate(10px, 20px);
+    transform: rotate(-8deg);
+  }
+}
+
+@keyframes img_animation {
+  0% {
+    transform: translate(-8px, 0);
+  }
+
+  50% {
+    transform: translate(0, -20px);
+  }
+
+  100% {
+    transform: translate(8px, 0);
   }
 }

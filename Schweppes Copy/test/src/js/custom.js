@@ -1,205 +1,307 @@
-window.addEventListener("load", (e) => {
-  // Show the title Never Still
-  addClass(document.querySelector(".c-home"), "is_active");
-});
-
-window.addEventListener("scroll", (i) => {
-  // Show all the title elements
-  if (document.documentElement.scrollTop > 500) {
-    const titlesWrapper = document.querySelector(".c-scroll");
-    removeClass(titlesWrapper, "hide");
-  }
-  const homeElem = document.querySelector(".c-home");
-  const stillElem = document.querySelector(".c-still");
-  const festiveElem = document.querySelector(".c-festive");
-
-  scrollHandler(
-    homeElem,
-    0,
-    0.5,
-    function () {
-      addClass(homeElem, "is_active");
-    },
-    function () {
-      removeClass(homeElem, "is_active");
+const utils = {
+  show: function (animateElem) {
+    this.addClass(animateElem, "is_active");
+  },
+  hide: function (animateElem) {
+    this.removeClass(animateElem, "is_active");
+  },
+  addClass: (animateElem, newClass) => {
+    if (typeof animateElem === "string") {
+      document.querySelector(animateElem).classList.add(newClass);
+    } else if (typeof animateElem === "object") {
+      animateElem.classList.add(newClass);
     }
-  );
-  scrollHandler(
-    stillElem,
-    -0.8,
-    0.5,
-    function () {
-      addClass(stillElem, "is_active");
-    },
-    function () {
-      removeClass(stillElem, "is_active");
+  },
+  removeClass: (animateElem, oldClass) => {
+    if (typeof animateElem === "string") {
+      document.querySelector(animateElem).classList.remove(oldClass);
+    } else if (typeof animateElem === "object") {
+      animateElem.classList.remove(oldClass);
     }
-  );
+  },
+  changeProperty: (property, color) => {
+    document.body.style.setProperty(property, color);
+  },
+  getDom(string) {
+    return document.querySelector(string);
+  },
+};
 
-  scrollHandler(
-    festiveElem,
-    -0.2,
-    0.3,
-    function () {
-      addClass(festiveElem, "is_active");
-      changeProperty("--bg-color", "#ffe500");
-    },
-    function () {
-      removeClass(festiveElem, "is_active");
+const scroll = {
+  init: function () {
+    this.showScrollElems();
+    this.setScrollAnimations();
+  },
+  showScrollElems: () => {
+    // Show all the title elements
+    if (document.documentElement.scrollTop > 500) {
+      utils.show(".c-scroll");
     }
-  );
-
-  // C-scroll
-  const titleElem = document.querySelectorAll(".c-scroll section");
-  titleElem.forEach((item, i) => {
-    const titleTag = item.querySelector(".c-title");
-    const scrollTag = document.querySelector(".c-scroll");
-    const bubbleTag = item.querySelector(".img_mask");
-    const buttonTag = titleTag.querySelector("a");
-    const startRatioY = -0.11 + i * 0.17;
-    const endRatioY = startRatioY + 0.17;
-    const showButtonRatioY = startRatioY + 0.074;
-    const color = titleTag.getAttribute("data-bg-color");
-    scrollHandler(
-      scrollTag,
-      startRatioY,
-      endRatioY,
-      function () {
-        addClass(titleTag, "is_active");
-        changeProperty("--bg-color", color);
+  },
+  setScrollAnimations: function () {
+    this.setHomeElem();
+    this.setStillElem();
+    this.setFestiveElem();
+    this.setScrollElems();
+  },
+  setHomeElem: () => {
+    const homeTrigger = new ScrollHandler(".c-home");
+    homeTrigger.addAnimation({
+      start: 0,
+      end: 0.5,
+      enterFunc: function () {
+        utils.show(".c-home");
       },
-      function () {
-        removeClass(titleTag, "is_active");
-      }
-    );
-    scrollHandler(
-      scrollTag,
-      showButtonRatioY,
-      endRatioY,
-      function () {
-        addClass(buttonTag, "is_active");
-        addClass(bubbleTag, "is_active");
+      leaveFunc: function () {
+        utils.hide(".c-home");
       },
-      function () {
-        removeClass(buttonTag, "is_active");
-      }
-    );
-  });
-});
+    });
+  },
+  setStillElem: () => {
+    const stillElemTrigger = new ScrollHandler(".c-still");
+    stillElemTrigger.addAnimation({
+      start: -0.8,
+      end: 0.5,
+      enterFunc: function () {
+        utils.show(".c-still");
+      },
+      leaveFunc: function () {
+        utils.hide(".c-still");
+      },
+    });
+  },
+  setFestiveElem: () => {
+    const festiveElemTrigger = new ScrollHandler(".c-festive");
+    festiveElemTrigger.addAnimation({
+      start: -0.2,
+      end: 0.3,
+      enterFunc: function () {
+        utils.show(".c-festive");
+      },
+      leaveFunc: function () {
+        utils.hide(".c-festive");
+      },
+    });
+  },
+  setScrollElems: () => {
+    // C-scroll elements
+    const scrollElemTrigger = new ScrollHandler(".c-scroll");
 
-// start & end are position relative to C-scroll Element
-function scrollHandler(triggerElem, start, end, enterFunc, leaveFunc) {
-  if (!triggerElem) {
-    return;
+    document.querySelectorAll(".c-scroll section").forEach((item, i) => {
+      const titleTag = item.querySelector(".c-title");
+      const bubbleTag = item.querySelector(".img_mask");
+      const buttonTag = item.querySelector(".c-title a");
+
+      const startY = -0.11 + i * 0.17;
+      const endY = startY + 0.17;
+
+      const showButtonStartY = startY + 0.074;
+
+      const color = titleTag.getAttribute("data-bg-color");
+
+      scrollElemTrigger.addAnimation({
+        start: startY,
+        end: endY,
+        enterFunc: function () {
+          utils.show(titleTag);
+          utils.changeProperty("--bg-color", color);
+        },
+        leaveFunc: function () {
+          utils.hide(titleTag);
+        },
+      });
+
+      scrollElemTrigger.addAnimation({
+        start: showButtonStartY,
+        end: endY,
+        enterFunc: function () {
+          utils.show(buttonTag);
+          utils.show(bubbleTag);
+        },
+        leaveFunc: function () {
+          utils.hide(buttonTag);
+        },
+      });
+    });
+  },
+};
+
+// start & end are position relative to trigger Element
+class ScrollHandler {
+  constructor(triggerElem) {
+    this.triggerTarget = utils.getDom(triggerElem);
   }
-  let startY, endY;
-  if (typeof start === "number") {
-    startY = triggerElem.getBoundingClientRect().height * start * -1;
+  addAnimation(info) {
+    if (typeof info.start === "number" && typeof info.end === "number") {
+      this.init(info);
+    }
   }
-  if (typeof end === "number") {
-    endY = triggerElem.getBoundingClientRect().height * end * -1;
+  init(info) {
+    const startY = this.getTriggerPos(this.triggerTarget, info.start);
+    const endY = this.getTriggerPos(this.triggerTarget, info.end);
+    const elemTop = this.getElemTop(this.triggerTarget);
+
+    // when elemtop + starty <=0, start the animation
+    // when elemtop + endY >=0, start the animation
+    if (startY + elemTop <= 0 && endY + elemTop >= 0) {
+      info.enterFunc();
+    } else {
+      info.leaveFunc();
+    }
   }
-  const elemPosY = triggerElem.getBoundingClientRect().top;
-  if (elemPosY <= startY && elemPosY >= endY) {
-    enterFunc();
-  } else {
-    leaveFunc();
+  getTriggerPos(triggerTarget, pos) {
+    return triggerTarget.getBoundingClientRect().height * pos;
+  }
+  getElemTop(element) {
+    return element.getBoundingClientRect().top;
   }
 }
 
-function addClass(animateElem, newClass) {
-  animateElem.classList.add(newClass);
-}
-function removeClass(animateElem, oldClass) {
-  animateElem.classList.remove(oldClass);
-}
-function changeProperty(property, color) {
-  document.body.style.setProperty(property, color);
-}
 // gooey bubbles
-(function () {
-  const svg = document.querySelectorAll(".gooey_bubble path");
-  svg.forEach((item) => {
-    let deg = 0,
-      step = 5;
+const setGooeyBubbles = {
+  init: function () {
+    // fast bubbles in home page
+    document.querySelectorAll(".gooey_bubble path").forEach((item) => {
+      this.setBubble(item, 5);
+    });
+
+    // slow bubbles in product page
+    this.setBubble(document.querySelector(".gooey_bubble_slow path"), 3);
+  },
+  setBubble: (bubble, step) => {
+    // document.querySelectorAll(".gooey_bubble path").forEach((item) => {
+    let deg = 0;
     setInterval(() => {
       if (deg >= 360) {
         deg = 0;
       }
       deg += step;
       const rotate = "rotate(" + deg + ")";
-      item.setAttribute("transform", rotate);
+      bubble.setAttribute("transform", rotate);
     }, 50);
-  });
-})();
+  },
+};
 
-// Change titles to single span elements
-const titles = document.querySelectorAll(".seperate_title");
+const separateTitles = {
+  init: function () {
+    // Change titles to single span elements
+    document.querySelectorAll(".seperate_title").forEach((item) => {
+      const arrs = this.getContentList(item);
 
-titles.forEach((item, i) => {
-  const innerHTML = item.innerHTML;
-  const arrs = innerHTML.split("<br>");
-  item.innerHTML = "";
-  const newNode = document.createElement("div");
-  newNode.classList.add("letter_wrapper");
-  arrs.forEach((arr) => {
-    const list = arr.trim().split("");
-    list.forEach((letter, i) => {
-      const newLetter = document.createElement("div");
-      newLetter.classList.add("letter");
-      const randomNum = parseInt(Math.random() * 5);
-      if (randomNum % 3 === 1) {
-        newLetter.classList.add("letter_delay");
-      } else if (randomNum % 3 === 2) {
-        newLetter.classList.add("letter_delay_1");
-      }
-      newLetter.innerText = letter;
-      newNode.appendChild(newLetter);
+      this.setInnerText(item, "");
+
+      const newNode = this.createNewNode("div", "letter_wrapper");
+
+      arrs.forEach((arr) => {
+        const list = arr.trim().split("");
+
+        list.forEach((letter) => {
+          const newLetter = this.createNewNode("div", "letter");
+
+          this.setRandomClass(newLetter);
+
+          this.setInnerText(newLetter, letter);
+
+          newNode.appendChild(newLetter);
+        });
+        const br = this.createNewNode("br");
+
+        newNode.appendChild(br);
+      });
+      item.appendChild(newNode);
     });
-    const br = document.createElement("br");
-    newNode.appendChild(br);
-  });
-  item.appendChild(newNode);
-});
+  },
+  getContentList: function (item) {
+    const innerHTML = item.innerHTML;
+    return innerHTML.split("<br>");
+  },
+  createNewNode: function (tag, cls) {
+    const newNode = document.createElement(tag);
+    if (!cls) {
+      return newNode;
+    }
+    newNode.classList.add(cls);
+    return newNode;
+  },
+  setRandomClass: function (item) {
+    const randomNum = this.getRandomNum(0, 5);
+
+    if (randomNum % 3 === 1) {
+      item.classList.add("letter_delay");
+    } else if (randomNum % 3 === 2) {
+      item.classList.add("letter_delay_1");
+    }
+  },
+  getRandomNum: function (min, max) {
+    return parseInt(Math.random() * max + min);
+  },
+  setInnerText: function (item, content) {
+    item.innerText = content;
+  },
+};
 
 // dropdown toggle
-const dropdownToggleBtns = document.querySelectorAll(".dropdown-toggle");
-dropdownToggleBtns.forEach((item) => {
-  item.addEventListener("click", (e) => {
-    item.classList.toggle("is_active");
-    document.body.classList.toggle("is_app_paused");
-    // document.querySelector("#dropdown1").classList.toggle("hidden");
+const setDropdownBtns = {
+  init: function () {
+    const dropdownToggleBtns = document.querySelectorAll(".dropdown-toggle");
+    dropdownToggleBtns.forEach((item) => {
+      this.setEvent(item);
+    });
+  },
+  setEvent: function (item) {
+    item.addEventListener("click", (e) => {
+      item.classList.toggle("is_active");
+      document.body.classList.toggle("is_app_paused");
+    });
+  },
+};
+
+// 在hover时才创建div
+const hoverDropdownElem = {
+  init: function () {
+    const dropDown = document.querySelector("#dropdown1");
+    dropDown.addEventListener("mouseover", (e) => {
+      const bgColor = e.target.getAttribute("data-bg-color");
+      const color = e.target.getAttribute("data-color");
+      if (bgColor && color) {
+        utils.changeProperty("--bg-color", bgColor);
+        utils.changeProperty("--color", color);
+      }
+      const selectedImg = document.querySelectorAll(".product_img_cover div")[
+        i
+      ];
+      addClass(selectedImg, "is_active");
+
+      const productCover = document.querySelector(".product_img_cover");
+    });
+    dropDown.addEventListener("mouseout", (e) => {
+      //     removeClass(
+      //       document.querySelector(".product_img_cover .is_active"),
+      //       "is_active"
+      //     );
+      //     changeProperty("--bg-color", "#ffe500");
+      //     changeProperty("--color", item.getAttribute("transparent"));
+      //     clearInterval(interval);
+      //   });
+    });
+  },
+};
+
+(function () {
+  window.addEventListener("load", (e) => {
+    // Show the title Never Still
+    utils.show(".c-home");
   });
-});
 
-let interval = null;
-document.querySelectorAll("#dropdown1 a").forEach((item, i) => {
-  item.addEventListener("mouseover", (e) => {
-    changeProperty("--bg-color", item.getAttribute("data-bg-color"));
-    changeProperty("--color", item.getAttribute("data-color"));
-
-    const selectedImg = document.querySelectorAll(".product_img_cover div")[i];
-    addClass(selectedImg, "is_active");
-
-    const productCover = document.querySelector(".product_img_cover");
-
-    // // Set the animation of img
-    // let translateData = [];
-    // productCover.style.transform.split(" ").forEach((item) => {
-    //   const data = item.match(/-?\d+\.\d+/g)
-    //     ? item.match(/-?\d+\.\d+/g)
-    //     : item.match(/\d+/g);
-    //   translateData.push(parseFloat(data));
-    // });
-    // });
+  window.addEventListener("scroll", (i) => {
+    scroll.init();
   });
-  item.addEventListener("mouseout", (e) => {
-    removeClass(
-      document.querySelector(".product_img_cover .is_active"),
-      "is_active"
-    );
-    changeProperty("--bg-color", "#ffe500");
-    changeProperty("--color", item.getAttribute("transparent"));
-    clearInterval(interval);
-  });
-});
+
+  setGooeyBubbles.init();
+
+  separateTitles.init();
+
+  setDropdownBtns.init();
+
+  hoverDropdownElem.init();
+})();
