@@ -494,29 +494,29 @@ header a {
 #dropdown2 .is_active a {
   color: white;
 }
-#dropdown2 .background {
+#dropdown2 .product_img_cover {
   z-index: -1;
 }
-#dropdown2 .background div {
+#dropdown2 .product_img_cover div {
   opacity: 0;
   transition: 0.3s linear;
 }
-#dropdown2 .background div.is_active {
+#dropdown2 .product_img_cover div.is_active {
   opacity: 1;
 }
-#dropdown2 .background div,
-#dropdown2 .background img {
+#dropdown2 .product_img_cover div,
+#dropdown2 .product_img_cover img {
   position: absolute;
   width: 100%;
   height: 100%;
   top: 0;
   left: 0;
 }
-#dropdown2 .background img {
+#dropdown2 .product_img_cover img {
   object-fit: cover;
 }
 
-#dropdown2 .background div::after {
+#dropdown2 .product_img_cover div::after {
   content: "";
   position: absolute;
   left: 0;

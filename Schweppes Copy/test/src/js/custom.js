@@ -291,105 +291,64 @@ const setDropdownBtns = {
 // product-dropdown
 
 class DropdownAnimation {
-  constructor(dropdown) {
-    this.dropdown = dropdown;
+  constructor(dropdownClass) {
+    this.dropdownClass = dropdownClass;
   }
   init() {
-    this.dropdown.addEventListener("mouseover", (e) => {
-      this.mouseover(e);
+    this.dropdownClass.element.addEventListener("mouseover", (e) => {
+      this.dropdownClass.mouseover(e);
     });
-    this.dropdown.addEventListener("mouseout", (e) => {
-      this.mouseOut(e);
+    this.dropdownClass.element.addEventListener("mouseout", (e) => {
+      this.dropdownClass.mouseOut(e);
     });
   }
-  mouseOut() {}
-  mouseover() {}
 }
-class ProductDropdown extends DropdownAnimation {
-  constructor() {
-    super();
+class Dropdown {
+  constructor(element) {
+    this.element = document.querySelector(element);
   }
-  mouseOut() {}
-  mouseover() {}
+  mouseOut() {
+    throw console.error("Please use the extended function");
+  }
+  mouseover() {
+    throw console.error("Please use the extended function");
+  }
 }
-const hoverDropdown1Elem = {
-  init: function () {
-    const dropDown = document.querySelector("#dropdown1");
-    dropDown.addEventListener("mouseover", (e) => {
-      this.mouseover(e);
-    });
-    dropDown.addEventListener("mouseout", (e) => {
-      this.mouseOut(e);
-    });
-  },
-  mouseOut: function (e) {
-    this.hideImg(e);
-    this.changeAtr("#ffe500", "transparent");
-  },
-  mouseover: function (e) {
-    console.log(this);
-    this.showImg(e);
-    this.changeAtr(
+class ProductDropdown extends Dropdown {
+  constructor(element) {
+    super(element);
+  }
+  mouseOut(e) {
+    dropdownUtils.hideImg(e);
+    dropdownUtils.changeAtr("#ffe500", "transparent");
+  }
+  mouseover(e) {
+    dropdownUtils.showImg(e, this.element.querySelector(".product_img_cover"));
+    dropdownUtils.changeAtr(
       e.target.getAttribute("data-bg-color"),
       e.target.getAttribute("data-color")
     );
-  },
+  }
+}
+class MoodDropdown extends Dropdown {
+  constructor(element) {
+    super(element);
+  }
+  mouseOut(e) {
+    dropdownUtils.hideImg();
+    dropdownUtils.removeAnimation(e);
+  }
+  mouseover(e) {
+    dropdownUtils.showImg(e, this.element.querySelector(".product_img_cover"));
+    dropdownUtils.addAnimation(e);
+  }
+}
+const dropdownUtils = {
   changeAtr: function (bgColor, color) {
     if (bgColor && color) {
       utils.changeProperty("--bg-color", bgColor);
       utils.changeProperty("--color", color);
     }
-  },
-  hideImg: function () {
-    const img = document.querySelector(".product_img_cover .is_active");
-    if (img) {
-      utils.hide(img);
-    }
-  },
-  showImg: function (e) {
-    const src = e.target.getAttribute("data-src");
-    if (src) {
-      const node = this.createImage(src);
-      utils.show(node);
-    }
-  },
-  myImage: function (src) {
-    const imgsCover = document.querySelector(".product_img_cover");
-
-    const newNode = document.createElement("div");
-    const newImg = document.createElement("img");
-    newImg.src = src;
-    newImg.alt = src;
-    newNode.appendChild(newImg);
-    imgsCover.appendChild(newNode);
-
-    return newNode;
-  },
-  createImage: (function () {
-    let cache = {};
-    return function (src) {
-      if (src in cache) return cache[src];
-      return (cache[src] = this.myImage(src));
-    };
-  })(),
-};
-const hoverDropdown2Elem = {
-  init: function () {
-    const dropDown = document.querySelector("#dropdown2");
-    dropDown.addEventListener("mouseover", (e) => {
-      this.mouseover(e);
-    });
-    dropDown.addEventListener("mouseout", (e) => {
-      this.mouseOut(e);
-    });
-  },
-  mouseOut: function (e) {
-    this.hideImg(e);
-    this.removeAnimation(e);
-  },
-  mouseover: function (e) {
-    this.showImg(e);
-    this.addAnimation(e);
   },
   addAnimation: function (e) {
     if (e.target.tagName === "A") {
@@ -399,36 +358,36 @@ const hoverDropdown2Elem = {
   },
   removeAnimation: function (e) {
     utils.removeClass(document.querySelector("#dropdown2"), "is_hover");
-    console.log(document.querySelector("#dropdown2 .is_active"));
     utils.removeClass(
       document.querySelector("#dropdown2 .is_active"),
       "is_active"
     );
   },
   hideImg: function () {
-    const img = document.querySelector(".background .is_active");
+    const img = document.querySelector(".product_img_cover .is_active");
     if (img) {
       utils.hide(img);
     }
   },
-  showImg: function (e) {
+  showImg: function (e, parentNode) {
     const src = e.target.getAttribute("data-src");
+
     if (src) {
       const node = this.createImage(src);
+      this.appendChild(parentNode, node);
+
       setTimeout(() => {
         utils.show(node);
       }, 10);
     }
   },
   myImage: function (src) {
-    const imgsCover = document.querySelector(".background");
-
     const newNode = document.createElement("div");
     const newImg = document.createElement("img");
+
     newImg.src = src;
     newImg.alt = src;
     newNode.appendChild(newImg);
-    imgsCover.appendChild(newNode);
 
     return newNode;
   },
@@ -439,6 +398,9 @@ const hoverDropdown2Elem = {
       return (cache[src] = this.myImage(src));
     };
   })(),
+  appendChild: function (parentNode, childNode) {
+    parentNode.appendChild(childNode);
+  },
 };
 (function () {
   window.addEventListener("load", (e) => {
@@ -456,6 +418,14 @@ const hoverDropdown2Elem = {
 
   setDropdownBtns.init();
 
-  hoverDropdown1Elem.init();
-  hoverDropdown2Elem.init();
+  const dropdown1Animation = new DropdownAnimation(
+    new ProductDropdown("#dropdown1")
+  );
+  const dropdown2Animation = new DropdownAnimation(
+    new MoodDropdown("#dropdown2")
+  );
+  dropdown1Animation.init();
+  dropdown2Animation.init();
+  // hoverDropdown1Elem.init();
+  // hoverDropdown2Elem.init();
 })();
