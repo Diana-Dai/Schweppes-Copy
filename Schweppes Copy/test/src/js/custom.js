@@ -6,24 +6,37 @@ const utils = {
     this.removeClass(animateElem, "is_active");
   },
   addClass: (animateElem, newClass) => {
-    if (typeof animateElem === "string") {
-      document.querySelector(animateElem).classList.add(newClass);
-    } else if (typeof animateElem === "object") {
-      animateElem.classList.add(newClass);
+    if (animateElem) {
+      if (typeof animateElem === "string") {
+        document.querySelector(animateElem).classList.add(newClass);
+      } else if (typeof animateElem === "object") {
+        animateElem.classList.add(newClass);
+      }
     }
   },
   removeClass: (animateElem, oldClass) => {
-    if (typeof animateElem === "string") {
-      document.querySelector(animateElem).classList.remove(oldClass);
-    } else if (typeof animateElem === "object") {
-      animateElem.classList.remove(oldClass);
+    if (animateElem) {
+      if (typeof animateElem === "string") {
+        document.querySelector(animateElem).classList.remove(oldClass);
+      } else if (typeof animateElem === "object") {
+        animateElem.classList.remove(oldClass);
+      }
+    }
+  },
+  toggleClass: (item, cls) => {
+    if (item && cls) {
+      item.classList.toggle(cls);
     }
   },
   changeProperty: (property, color) => {
-    document.body.style.setProperty(property, color);
+    if (property && color) {
+      document.body.style.setProperty(property, color);
+    }
   },
   getDom(string) {
-    return document.querySelector(string);
+    if (string) {
+      return document.querySelector(string);
+    }
   },
 };
 
@@ -161,15 +174,14 @@ class ScrollHandler {
 const setGooeyBubbles = {
   init: function () {
     // fast bubbles in home page
-    document.querySelectorAll(".gooey_bubble path").forEach((item) => {
-      this.setBubble(item, 5);
+    document.querySelectorAll(".bubble path").forEach((item) => {
+      this.setBubble(item, 3);
     });
 
     // slow bubbles in product page
-    this.setBubble(document.querySelector(".gooey_bubble_slow path"), 3);
+    this.setBubble(document.querySelector(".bubble_slow path"), 2);
   },
   setBubble: (bubble, step) => {
-    // document.querySelectorAll(".gooey_bubble path").forEach((item) => {
     let deg = 0;
     setInterval(() => {
       if (deg >= 360) {
@@ -250,43 +262,184 @@ const setDropdownBtns = {
   },
   setEvent: function (item) {
     item.addEventListener("click", (e) => {
-      item.classList.toggle("is_active");
-      document.body.classList.toggle("is_app_paused");
+      this.onclick(item);
     });
+  },
+  onclick: function (item) {
+    this.checkDropdown(item);
+    this.toggleAllClass(item);
+  },
+  toggleAllClass: function (item) {
+    utils.toggleClass(item, "is_active");
+    this.toggleBodyClass();
+  },
+  toggleBodyClass: function () {
+    if (document.querySelector(".dropdown-toggle.is_active")) {
+      utils.addClass(document.body, "is_app_paused");
+    } else {
+      utils.removeClass(document.body, "is_app_paused");
+    }
+  },
+  checkDropdown: function (item) {
+    const ativeDropdown = document.querySelector(".dropdown-toggle.is_active");
+    if (ativeDropdown !== item) {
+      utils.hide(ativeDropdown);
+    }
   },
 };
 
-// 在hover时才创建div
-const hoverDropdownElem = {
+// product-dropdown
+
+class DropdownAnimation {
+  constructor(dropdown) {
+    this.dropdown = dropdown;
+  }
+  init() {
+    this.dropdown.addEventListener("mouseover", (e) => {
+      this.mouseover(e);
+    });
+    this.dropdown.addEventListener("mouseout", (e) => {
+      this.mouseOut(e);
+    });
+  }
+  mouseOut() {}
+  mouseover() {}
+}
+class ProductDropdown extends DropdownAnimation {
+  constructor() {
+    super();
+  }
+  mouseOut() {}
+  mouseover() {}
+}
+const hoverDropdown1Elem = {
   init: function () {
     const dropDown = document.querySelector("#dropdown1");
     dropDown.addEventListener("mouseover", (e) => {
-      const bgColor = e.target.getAttribute("data-bg-color");
-      const color = e.target.getAttribute("data-color");
-      if (bgColor && color) {
-        utils.changeProperty("--bg-color", bgColor);
-        utils.changeProperty("--color", color);
-      }
-      const selectedImg = document.querySelectorAll(".product_img_cover div")[
-        i
-      ];
-      addClass(selectedImg, "is_active");
-
-      const productCover = document.querySelector(".product_img_cover");
+      this.mouseover(e);
     });
     dropDown.addEventListener("mouseout", (e) => {
-      //     removeClass(
-      //       document.querySelector(".product_img_cover .is_active"),
-      //       "is_active"
-      //     );
-      //     changeProperty("--bg-color", "#ffe500");
-      //     changeProperty("--color", item.getAttribute("transparent"));
-      //     clearInterval(interval);
-      //   });
+      this.mouseOut(e);
     });
   },
-};
+  mouseOut: function (e) {
+    this.hideImg(e);
+    this.changeAtr("#ffe500", "transparent");
+  },
+  mouseover: function (e) {
+    console.log(this);
+    this.showImg(e);
+    this.changeAtr(
+      e.target.getAttribute("data-bg-color"),
+      e.target.getAttribute("data-color")
+    );
+  },
+  changeAtr: function (bgColor, color) {
+    if (bgColor && color) {
+      utils.changeProperty("--bg-color", bgColor);
+      utils.changeProperty("--color", color);
+    }
+  },
+  hideImg: function () {
+    const img = document.querySelector(".product_img_cover .is_active");
+    if (img) {
+      utils.hide(img);
+    }
+  },
+  showImg: function (e) {
+    const src = e.target.getAttribute("data-src");
+    if (src) {
+      const node = this.createImage(src);
+      utils.show(node);
+    }
+  },
+  myImage: function (src) {
+    const imgsCover = document.querySelector(".product_img_cover");
 
+    const newNode = document.createElement("div");
+    const newImg = document.createElement("img");
+    newImg.src = src;
+    newImg.alt = src;
+    newNode.appendChild(newImg);
+    imgsCover.appendChild(newNode);
+
+    return newNode;
+  },
+  createImage: (function () {
+    let cache = {};
+    return function (src) {
+      if (src in cache) return cache[src];
+      return (cache[src] = this.myImage(src));
+    };
+  })(),
+};
+const hoverDropdown2Elem = {
+  init: function () {
+    const dropDown = document.querySelector("#dropdown2");
+    dropDown.addEventListener("mouseover", (e) => {
+      this.mouseover(e);
+    });
+    dropDown.addEventListener("mouseout", (e) => {
+      this.mouseOut(e);
+    });
+  },
+  mouseOut: function (e) {
+    this.hideImg(e);
+    this.removeAnimation(e);
+  },
+  mouseover: function (e) {
+    this.showImg(e);
+    this.addAnimation(e);
+  },
+  addAnimation: function (e) {
+    if (e.target.tagName === "A") {
+      utils.addClass(document.querySelector("#dropdown2"), "is_hover");
+      utils.addClass(e.target.parentNode, "is_active");
+    }
+  },
+  removeAnimation: function (e) {
+    utils.removeClass(document.querySelector("#dropdown2"), "is_hover");
+    console.log(document.querySelector("#dropdown2 .is_active"));
+    utils.removeClass(
+      document.querySelector("#dropdown2 .is_active"),
+      "is_active"
+    );
+  },
+  hideImg: function () {
+    const img = document.querySelector(".background .is_active");
+    if (img) {
+      utils.hide(img);
+    }
+  },
+  showImg: function (e) {
+    const src = e.target.getAttribute("data-src");
+    if (src) {
+      const node = this.createImage(src);
+      setTimeout(() => {
+        utils.show(node);
+      }, 10);
+    }
+  },
+  myImage: function (src) {
+    const imgsCover = document.querySelector(".background");
+
+    const newNode = document.createElement("div");
+    const newImg = document.createElement("img");
+    newImg.src = src;
+    newImg.alt = src;
+    newNode.appendChild(newImg);
+    imgsCover.appendChild(newNode);
+
+    return newNode;
+  },
+  createImage: (function () {
+    let cache = {};
+    return function (src) {
+      if (src in cache) return cache[src];
+      return (cache[src] = this.myImage(src));
+    };
+  })(),
+};
 (function () {
   window.addEventListener("load", (e) => {
     // Show the title Never Still
@@ -303,5 +456,6 @@ const hoverDropdownElem = {
 
   setDropdownBtns.init();
 
-  hoverDropdownElem.init();
+  hoverDropdown1Elem.init();
+  hoverDropdown2Elem.init();
 })();

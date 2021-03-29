@@ -32,9 +32,9 @@ body {
   clip-path: url("#home-experiences");
 }
 
-.gooey_bubble path {
+.bubble path,
+.bubble_slow path {
   transform-origin: center;
-  transform-box: fill-box;
 }
 .button-yellow,
 .button-yellow-circle,
@@ -160,6 +160,8 @@ body {
 .top-40 {
   top: 40%;
 }
+
+/* scroll elements */
 .c-title {
   z-index: -1;
 }
@@ -196,8 +198,8 @@ body {
   transform: translateY(0);
 }
 .c-festive .gooey_bubble {
-  width: 120%;
-  height: 120%;
+  width: 130%;
+  height: 130%;
 }
 .c-festive .gooey_bubble {
   object-fit: cover;
@@ -393,24 +395,36 @@ body {
   opacity: 1;
 }
 
+/* navigation */
+nav::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  height: 2px;
+  background: #000;
+}
 /* dropdown */
 .is_app_paused main {
   opacity: 0;
   overflow: hidden;
 }
-.is_app_paused #dropdown1 {
+.is_app_paused .dropdown-menu .is_active + .dropdown {
   display: block;
-  overflow-y: scroll;
 }
-#dropdown1 {
+.dropdown {
   position: fixed;
+  top: 0;
   left: 0;
   bottom: 0;
   width: 100%;
 }
-#dropdown1 a {
+.dropdown a {
   transition: 1s linear;
   cursor: pointer;
+}
+header a {
+  z-index: 1;
 }
 #dropdown1 a:hover {
   color: #fff;
@@ -427,20 +441,27 @@ body {
   opacity: 0.8;
 }
 #dropdown1 .product_img_cover div {
+  visibility: hidden;
+  position: absolute;
+  top: 0;
+  right: 0;
   transition: 0.4s linear;
   opacity: 0;
+}
+#dropdown1 .product_img_cover div:first-child {
+  position: relative;
 }
 #dropdown1 .product_img_cover .is_active {
   visibility: visible;
   opacity: 1;
 }
 
-#dropdown1 .product_img_cover div {
+#dropdown1 .product_img_cover {
   transform-origin: bottom;
   animation: 3s ease-in-out alternate infinite;
   animation-name: product_animation;
 }
-#dropdown1 .product_img_cover img {
+#dropdown1 .product_img_cover1 {
   animation: 3s ease-in-out alternate infinite;
   animation-name: img_animation;
 }
@@ -466,4 +487,42 @@ body {
   100% {
     transform: translate(8px, 0);
   }
+}
+#dropdown2.is_hover {
+  color: rgba(255, 255, 255, 0.589);
+}
+#dropdown2 .is_active a {
+  color: white;
+}
+#dropdown2 .background {
+  z-index: -1;
+}
+#dropdown2 .background div {
+  opacity: 0;
+  transition: 0.3s linear;
+}
+#dropdown2 .background div.is_active {
+  opacity: 1;
+}
+#dropdown2 .background div,
+#dropdown2 .background img {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+#dropdown2 .background img {
+  object-fit: cover;
+}
+
+#dropdown2 .background div::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  content: "";
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  opacity: 0.5;
 }

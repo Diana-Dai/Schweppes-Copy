@@ -55,7 +55,7 @@
                     fill="#000"></path>
             </symbol>
         </svg>
-        <svg class="gooey_bubble" width="0" height="0" viewBox="0 0 500 500">
+        <svg class="bubble" width="0" height="0" viewBox="0 0 500 500">
             <defs>
                 <clipPath id="home-experiences" clipPathUnits="objectBoundingBox"
                     style="transform: scale(0.002, 0.002);">
@@ -67,59 +67,50 @@
         </svg>
     </div>
     <header class="w-full bg-transparent fixed z-10">
-        <div class="flex flex-row justify-between sm:mx-10 mx-4 items-center border-b-2 border-black">
+        <nav class="flex flex-row justify-between sm:mx-10 mx-4 items-center  border-black">
             <ul class="hidden dropdown-menu lg:flex flex-row flex-quarter">
                 <li><a href="#" class="uppercase dropdown-toggle mr-4 button-yellow"
                         data-target="#dropdown1"><span>Products</span><i class="bi bi-arrow-down-short "></i></a>
-                    <div id="dropdown1" class="hidden top-32 sm:mx-10 mx-4">
-                        <div class="text-5xl">
-                            <ul class="py-20">
-                                <li class="py-3"><a data-bg-color="#f5a619" data-color="#fdd600" href="#">TONiC
+                    <div id="dropdown1" class="dropdown hidden pt-32">
+                        <div class="text-5xl overflow-y-scroll py-20 h-full">
+                            <ul class=" sm:mx-10 mx-4">
+                                <li class="py-3"><a data-bg-color="#f5a619" data-color="#fdd600"
+                                        data-src="./imgs/tonicWater_EN.png" href="#">TONiC
                                         WATER</a></li>
                                 <li class="py-3">
-                                    <a data-bg-color="#037044" data-color="#62b943" href="#">GiNGER ALE</a>
+                                    <a data-bg-color="#037044" data-src="./imgs/gingerAle_EN.png" data-color="#62b943"
+                                        href="#">GiNGER ALE</a>
                                 </li>
-                                <li class="pt-3"><a data-bg-color="#075b74" data-color="#62b5c9" href="#">CLUB SODA</a>
+                                <li class="pt-3"><a data-bg-color="#075b74" data-src="./imgs/clubSoda_EN.png"
+                                        data-color="#62b5c9" href="#">CLUB SODA</a>
                                 </li>
                             </ul>
                             <p class="text-2xl font-normal">
                                 ZERO SUGAR SOFT DRiNKS
                             </p>
                             <ul class="pt-6">
-                                <li class="py-3"><a data-bg-color="#037044" data-color="#151513" href="#">ZERO SUGAR
+                                <li class="py-3"><a data-bg-color="#037044" data-src="./imgs/zero_gingerAle_EN.png"
+                                        data-color="#151513" href="#">ZERO SUGAR
                                         GiNGER ALE</a> </li>
-                                <li class="py-3"><a data-bg-color="#f3e3cc" data-color="#151513" href="#">ZERO SUGAR
+                                <li class="py-3"><a data-bg-color="#f3e3cc" data-src="./imgs/zero_orange_EN.png"
+                                        data-color="#151513" href="#">ZERO SUGAR
                                         BLOOD ORANGE SPARKLiNG
                                         SODA</a> </li>
-                                <li class="py-3"><a data-bg-color="#f3e3cc" data-color="#151513" href="#">ZERO SUGAR
+                                <li class="py-3"><a data-bg-color="#f3e3cc" data-src="./imgs/zero_gingerAle_EN.png"
+                                        data-color="#151513" href="#">ZERO SUGAR
                                         GRAPEFRUiT SPARKLiNG
                                         SODA</a> </li>
                             </ul>
                         </div>
                         <div class="products fixed">
-                            <svg class="gooey_bubble_slow" width="600" height="600" viewBox="0 0 500 500">
+                            <svg class="bubble_slow" width="600" height="600" viewBox="0 0 500 500">
                                 <path
                                     d="M441.2 361C388 436 316.9 475.8 227.8 480.5c-89.1 4.7-150.6-32.7-184.5-112.3S10.1 210.4 45.6 134 142.8 19.6 230.8 20.4s158.2 39 211 114.7 52.7 151-.6 225.9z">
                                 </path>
                             </svg>
-                            <div class="w-48 product_img_cover absolute top-32 right-60">
-                                <div class="invisible absolute top-0 right-0">
-                                    <img src="./imgs/tonicWater_EN.png" alt="./imgs/tonicWater_EN.png">
-                                </div>
-                                <div class="invisible absolute top-0 right-0">
-                                    <img src="./imgs/gingerAle_EN.png" alt="./imgs/gingerAle_EN.png">
-                                </div>
-                                <div class="invisible absolute top-0 right-0">
-                                    <img src="./imgs/clubSoda_EN.png" alt="./imgs/clubSoda_EN.png">
-                                </div>
-                                <div class="invisible absolute top-0 right-0">
-                                    <img src="./imgs/zero_gingerAle_EN.png" alt="./imgs/zero_gingerAle_EN.png">
-                                </div>
-                                <div class="invisible absolute top-0 right-0">
-                                    <img src="./imgs/zero_orange_EN.png" alt="./imgs/zero_orange_EN.png">
-                                </div>
-                                <div class="invisible absolute top-0 right-0">
-                                    <img src="./imgs/zero_gingerAle_EN.png" alt="./imgs/zero_gingerAle_EN.png">
+                            <div class="w-48 product_img_wrapper absolute top-32 right-60">
+                                <div class="product_img_cover1">
+                                    <div class="product_img_cover"></div>
                                 </div>
                             </div>
                         </div>
@@ -127,7 +118,48 @@
                 </li>
                 <li><a href="#" class="uppercase dropdown-toggle button-yellow"><span>Moods</span><i
                             class="bi bi-arrow-down-short" data-target="#dropdown2"></i></a>
-                    <div id="dropdown2"></div>
+                    <div id="dropdown2" class="dropdown is_hover hidden pt-32 ">
+                        <div class="background absolute top-0 bottom-0 left-0 right-0">
+                        </div>
+                        <div class="text-5xl pt-20 overflow-y-scroll  h-full">
+                            <ul class="sm:mx-10 mx-4 ">
+                                <p class="text-2xl font-normal pb-5">
+                                    FEATURED
+                                </p>
+                                <li class="py-3"><a data-src="./imgs/header_OPTIM-1024x576.jpg" href="#">FESTiVE
+                                        FRENZY
+                                        <br><span class="text-2xl font-medium"> <i class="bi bi-plus"></i>
+                                            Bubble Punch </span>
+                                    </a></li>
+                                <li class="py-3"><a data-src="./imgs/header-1-800x450.jpg" href="#">BETTER TOGETHER
+                                        <br> <span class="text-2xl font-medium"> <i class="bi bi-plus"></i>
+                                            Gin & Coffee </span>
+                                    </a></li>
+                                <li class="py-3"><a data-src="./imgs/header-2-800x450.jpg" href="#">SiMPLiCiTY
+                                        <br> <span class="text-2xl font-medium"> <i class="bi bi-plus"></i>
+                                            Unique Vanilla
+                                        </span>
+                                    </a></li>
+                                <li class="py-3"><a data-src="./imgs/header-3-800x450.jpg" href="#"> EFFERVESCENT
+                                        NOSTALGiA
+                                        <br> <span class="text-2xl font-medium"> <i class="bi bi-plus"></i>
+                                            Jam Club </span>
+                                    </a></li>
+                                <li class="py-3"><a data-src="./imgs/header-4-800x450.jpg" href="#">PASSiON DESTiNATION
+                                        <br> <span class="text-2xl font-medium"> <i class="bi bi-plus"></i>
+                                            Exotic Delight </span>
+                                    </a></li>
+                                <li class="py-3"><a data-src="./imgs/header-5-800x450.jpg" href="#">THiRST FOR ELEGANCE
+                                        <br> <span class="text-2xl font-medium"> <i class="bi bi-plus"></i>
+                                            Rosemary Red
+                                        </span>
+                                    </a></li>
+                            </ul>
+
+
+                        </div>
+
+                    </div>
                 </li>
             </ul>
             <div class="flex dropdown-menu lg:hidden flex-quarter">
@@ -149,7 +181,7 @@
                 </li>
                 <li class="uppercase"><a href="#" class="button-yellow-circle"><span>FR</span></a></li>
             </ul>
-        </div>
+        </nav>
     </header>
     <main>
         <section class="c-home">
