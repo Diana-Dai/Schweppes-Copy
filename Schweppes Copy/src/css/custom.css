@@ -1,88 +1,617 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.0/font/bootstrap-icons.css");
-/* @import url("https://fonts.googleapis.com/css2?family=Playfair+Display&family=Ubuntu:wght@300&display=swap"); */
+
+@import url("https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500;700&display=swap");
 body {
   font-weight: 700;
   font-size: 0.88rem;
-}
-.inline use {
-  transform: scale(0.6);
-  transform-origin: center;
-}
-.bg-yellow-ffe500 {
-  background-color: #ffe500;
+  --bg-color: #ffe500;
+  --color: transparent;
+  font-family: "Ubuntu", sans-serif;
+  transition: 0.8s linear;
 }
 
-.bg-orange {
-  background-color: #fdd600;
-}
-.bg-green {
-  background-color: #62b943;
-}
-.bg-blue {
-  background-color: #63b5c9;
+.bg-color {
+  background-color: var(--bg-color);
 }
 .bi-arrow-down-short {
   font-size: 1.2rem;
   vertical-align: -2px;
+}
+.bi-arrow-down-short::before {
+  transition: 0.2s linear;
   font-weight: bold !important;
 }
-
-.flex-1/4 {
-  flex: 0 0 25%;
+.pb-100 {
+  padding-bottom: 36rem;
 }
 
-.button-yellow {
+.flex-quarter {
+  flex: 1 0 25%;
+}
+
+.gooey_bubble {
+  clip-path: url("#home-experiences");
+}
+
+.bubble path,
+.bubble_slow path {
+  transform-origin: center;
+}
+
+.button-yellow,
+.button-yellow-circle,
+.button-yellow-wide {
+  overflow: hidden;
+  position: relative;
   display: inline-block;
-  padding: 0.4rem 1.2rem;
   border: 2px solid black;
-  border-radius: 50px;
   box-sizing: content-box;
   background-color: #ffe500;
+  transition: 0.3s linear;
 }
-
 .button-yellow-circle {
-  display: inline-block;
   width: 38px;
   height: 38px;
   line-height: 38px;
   text-align: center;
   border-radius: 50%;
-  border: 2px solid black;
-  box-sizing: content-box;
-  background-color: #ffe500;
 }
 .button-yellow-wide {
-  display: inline-block;
   padding: 1rem 2.4rem;
-  border: 2px solid black;
   border-radius: 50px;
-  box-sizing: content-box;
-  background-color: #ffe500;
 }
+.button-yellow {
+  padding: 0.3rem 1.2rem;
+  border-radius: 50px;
+}
+
+.button-yellow *,
+.button-yellow-circle *,
+.button-yellow-wide * {
+  position: relative;
+}
+.button-yellow::before,
+.button-yellow-wide::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: 0;
+  width: 105%;
+  height: 200%;
+  background: black;
+  clip-path: ellipse(50% 50%);
+  transition: 0.3s linear;
+  transform: translateY(100%);
+}
+.button-yellow-circle::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: 0;
+  width: 110%;
+  height: 200%;
+  background: black;
+  clip-path: circle();
+  transition: 0.3s linear;
+  transform: translateY(100%);
+}
+.button-yellow:hover,
+.button-yellow-circle:hover,
+.button-yellow-wide:hover {
+  color: #ffe500;
+}
+.button-yellow:hover::before,
+.button-yellow-circle:hover::before,
+.button-yellow-wide:hover::before {
+  transform: translateY(0%);
+}
+
 .button-white {
+  position: relative;
   display: inline-block;
-  padding: 0.1rem 0.5rem;
+  padding: 0.05rem 0.3rem;
   color: white;
   border: 2px solid white;
   border-radius: 20px;
   box-sizing: content-box;
   background-color: transparent;
+  font-size: 0.7rem;
+}
+.c-scroll.is_active {
+  opacity: 1;
+}
+.dropdown-toggle.is_active * {
+  color: #ffe500;
+}
+.dropdown-toggle.is_active .bi-arrow-down-short::before {
+  transform: rotate(180deg);
+}
+.dropdown-toggle.is_active::before {
+  transform: translateY(0);
+}
+.underline_text {
+  position: relative;
+  transition: 0.2s linear;
+  cursor: pointer;
+}
+.underline_text::before {
+  position: absolute;
+  content: "";
+  bottom: 0;
+  right: 0;
+  width: 0;
+  border-bottom: 1px solid currentColor;
+  transition: all 0.4s linear;
+}
+
+.underline_text:hover::before {
+  width: 100%;
+  left: 0;
 }
 .flex-2 {
   flex: 2;
 }
 
-.text-10xl {
-  font-size: 15rem;
-  line-height: 1;
+@media (min-width: 1024px) {
+  .lg\:text-10xl {
+    font-size: 15rem;
+    line-height: 1;
+  }
 }
+
 .top-40 {
   top: 40%;
 }
-/* 
-.top-130 {
-  top: 130%;
+
+/* scroll elements */
+.c-title {
+  z-index: -1;
+}
+.c-home .letter_wrapper,
+.c-still .letter_wrapper {
+  transition: 0.3s ease;
+  opacity: 0;
+}
+
+.c-home.is_active .letter_wrapper,
+.c-still.is_active .letter_wrapper {
+  opacity: 1;
+}
+
+.c-home .letter,
+.c-still .letter {
+  display: inline-block;
+  white-space: pre-wrap;
+  transform-origin: center;
+  transition: 0.6s 0.6s ease-in-out;
+  transform: rotate(15deg) translateY(300px);
+}
+.c-home .letter_delay,
+.c-still .letter_delay {
+  transform: translateY(300px) rotate(-15deg);
+}
+
+.is_active .letter_wrapper .letter {
+  transition: 0.6s ease-in-out;
+  transform: translateY(0);
+}
+.is_active .letter_wrapper .letter_delay {
+  transition: 0.6s 0.05s ease-in-out;
+  transform: translateY(0);
+}
+.c-festive .gooey_bubble {
+  width: 130%;
+  height: 130%;
+}
+.c-festive .gooey_bubble {
+  object-fit: cover;
+}
+.c-festive h2,
+.c-festive a {
+  transition: 0.3s ease-in-out;
+  transform: translateY(100px);
+  opacity: 0;
+}
+.c-festive.is_active h2,
+.c-festive.is_active a {
+  transform: translateY(0);
+  opacity: 1;
+}
+.c-festive.is_active h2 {
+  transition: 0.6s ease-in-out;
+}
+.c-festive.is_active a {
+  transition: 0.6s 0.2s ease-in-out;
+}
+
+.img_mask::before {
+  position: absolute;
+  left: 0;
+  content: "";
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  transition: 0.5s linear;
+  opacity: 0.3;
+}
+.c-scroll .gooey_bubble {
+  cursor: pointer;
+}
+.c-scroll .gooey_bubble.img_mask:hover::before {
+  opacity: 0;
+}
+.c-scroll .gooey_bubble.img_mask * {
+  position: relative;
+}
+.c-scroll .drink-img-new {
+  width: 100px;
+  height: 100px;
+  position: absolute;
+  transform: rotate(15deg);
+  right: -100px;
+  top: 0;
+}
+.c-scroll .drink-img-new path {
+  animation: img-new 2.5s infinite none;
+}
+.c-scroll .drink-img-new path:nth-child(2) {
+  animation-delay: 0.83s;
+}
+.c-scroll .drink-img-new path:nth-child(3) {
+  animation-delay: 1.66s;
+}
+@keyframes img-new {
+  0% {
+    fill: transparent;
+    fill-opacity: 0;
+  }
+  50% {
+    fill: white;
+    fill-opacity: 1;
+  }
+  100% {
+    fill: transparent;
+    fill-opacity: 0;
+  }
+}
+.c-scroll .drink-img-left {
+  transform: rotate(-10deg);
+  animation: drink-left 1s ease-in-out infinite alternate;
+}
+.c-scroll .drink-img-right {
+  transform: rotate(10deg);
+  animation: drink-right 1s ease-in-out infinite alternate;
+}
+
+@keyframes drink-left {
+  to {
+    transform: translateY(10px) rotate(-10deg);
+  }
+}
+
+@keyframes drink-right {
+  to {
+    transform: translateY(10px) rotate(10deg);
+  }
+}
+/* c-scroll animation */
+.c-title a {
+  transition: 0.3s linear;
+  opacity: 0;
+}
+
+.c-title a.is_active {
+  opacity: 1;
+}
+
+.c-title .letter {
+  display: inline-block;
+  white-space: pre-wrap;
+  transform-origin: center;
+  animation: letter-leave 1s forwards;
+}
+.c-title .letter_delay {
+  animation: letter-leave-delay 1s forwards;
+}
+.c-title .letter_delay_1 {
+  animation: letter-leave-delay-1 1s forwards;
+}
+@keyframes letter-leave {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: rotate(15deg) translateY(-500px);
+    opacity: 0;
+  }
+}
+@keyframes letter-leave-delay {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: rotate(-15deg) translateY(-500px);
+    opacity: 0;
+  }
+}
+@keyframes letter-leave-delay-1 {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: rotate(-15deg) translateY(-500px);
+    opacity: 0;
+  }
+}
+
+.c-title.is_active .letter {
+  animation: letter 1s ease backwards;
+}
+.c-title.is_active .letter_delay {
+  animation: letter-delay 1s ease backwards;
+}
+.c-title.is_active .letter_delay_1 {
+  animation: letter-delay-1 1s ease backwards;
+}
+@keyframes letter {
+  from {
+    transform: rotate(15deg) translateY(300px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+@keyframes letter-delay {
+  from {
+    transform: rotate(-25deg) translateY(400px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+@keyframes letter-delay-1 {
+  from {
+    transform: rotate(35deg) translateY(350px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+/* Animation of gooey bubbles */
+@keyframes bubble_rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes bubble_reverseRotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(-360deg);
+  }
+}
+.gooey_bubble_wrapper {
+  animation: 4s linear infinite;
+  animation-name: bubble_rotate;
+  transform-origin: center;
+}
+/* .gooey_bubble {
+  animation: 4s linear backwards infinite;
+  animation-name: bubble_rotate;
+  transform-origin: center;
 } */
+.gooey_bubble video {
+  animation: 4s linear backwards infinite;
+  animation-name: bubble_reverseRotate;
+  transform-origin: center;
+}
+.c-scroll .img_mask > div {
+  transition: 1s linear;
+  transform: translateY(100px);
+  opacity: 0;
+}
+.c-scroll .img_mask.is_active > div {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* navigation */
+nav::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  height: 2px;
+  background: #000;
+}
+/* dropdown */
+main {
+  transition: all 0.3s linear 0.4s;
+}
+.is_app_paused main {
+  transition: 0s linear;
+  opacity: 0;
+  overflow: hidden;
+}
+.is_app_paused .dropdown-menu .is_active + .dropdown {
+  visibility: visible;
+  opacity: 1;
+}
+.is_app_paused .dropdown-menu .is_active + .dropdown ul {
+  transition: all 0.2s linear;
+
+  opacity: 1;
+  transform: translateY(0);
+}
+.dropdown {
+  visibility: hidden;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  opacity: 0;
+  width: 100%;
+  transition: all 0.3s linear 0.3s;
+}
+.dropdown ul {
+  transform: translateY(40px);
+  opacity: 0;
+  transition: all 0.2s linear;
+}
+.dropdown a {
+  transition: 1s linear;
+  cursor: pointer;
+}
+header a {
+  z-index: 1;
+}
+#dropdown1 a:hover {
+  color: #fff;
+}
+#dropdown1 .products {
+  right: -10rem;
+  bottom: -10rem;
+}
+#dropdown1 .products svg {
+  transition: 0.4s linear;
+  fill: var(--color);
+}
+#dropdown1 .products {
+  opacity: 0.8;
+}
+#dropdown1 .product_img_cover div {
+  visibility: hidden;
+  position: absolute;
+  top: 0;
+  right: 0;
+  transition: 0.4s linear;
+  opacity: 0;
+}
+#dropdown1 .product_img_cover div:first-child {
+  position: relative;
+}
+#dropdown1 .product_img_cover .is_active {
+  visibility: visible;
+  opacity: 1;
+}
+
+#dropdown1 .product_img_cover {
+  transform-origin: bottom;
+  animation: 3s ease-in-out alternate infinite;
+  animation-name: product_animation;
+}
+#dropdown1 .product_img_cover1 {
+  animation: 3s ease-in-out alternate infinite;
+  animation-name: img_animation;
+}
+@keyframes product_animation {
+  0% {
+    transform: rotate(8deg);
+  }
+
+  100% {
+    transform: rotate(-8deg);
+  }
+}
+
+@keyframes img_animation {
+  0% {
+    transform: translate(-8px, 0);
+  }
+
+  50% {
+    transform: translate(0, -20px);
+  }
+
+  100% {
+    transform: translate(8px, 0);
+  }
+}
+#dropdown2.is_hover {
+  color: rgba(255, 255, 255, 0.589);
+}
+#dropdown2 .is_active a {
+  color: white;
+}
+#dropdown2 .product_img_cover {
+  z-index: -1;
+}
+#dropdown2 .product_img_cover div {
+  opacity: 0;
+  transition: 0.3s linear;
+}
+#dropdown2 .product_img_cover div.is_active {
+  opacity: 1;
+}
+#dropdown2 .product_img_cover div,
+#dropdown2 .product_img_cover img {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+#dropdown2 .product_img_cover img {
+  object-fit: cover;
+}
+
+#dropdown2 .product_img_cover div::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  content: "";
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  opacity: 0.5;
+}
+
+/* particles */
+#particles {
+  z-index: 1;
+}
+#particles .particles_item img {
+  transform: rotate(180deg);
+}
+#particles .particles_item {
+  opacity: 0.5;
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  animation: particle var(--time) ease-in-out alternate infinite;
+}
+@keyframes particle {
+  50% {
+    transform: translateX(var(--distance));
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+#particles .particles_item[data-depth="1"] {
+  width: 10px;
+}
+#particles .particles_item[data-depth="2"] {
+  width: 20px;
+}
+#particles .particles_item[data-depth="3"] {
+  width: 30px;
+}
