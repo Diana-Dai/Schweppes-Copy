@@ -412,12 +412,12 @@ body {
   animation-name: bubble_rotate;
   transform-origin: center;
 }
-/* .gooey_bubble {
-  animation: 4s linear backwards infinite;
+.gooey_bubble_wrapper_slow {
+  animation: 6s linear backwards infinite;
   animation-name: bubble_rotate;
   transform-origin: center;
-} */
-.gooey_bubble video {
+}
+.gooey_bubble_wrapper video {
   animation: 4s linear backwards infinite;
   animation-name: bubble_reverseRotate;
   transform-origin: center;

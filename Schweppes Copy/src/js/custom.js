@@ -177,6 +177,14 @@ class ScrollHandler {
 // gooey bubbles
 const setGooeyBubbles = {
   init: function () {
+    const browser = checkBrowser();
+    if (browser === "ie" || browser === "safari") {
+      this.setClass();
+    } else {
+      this.setAllBubbles();
+    }
+  },
+  setAllBubbles: function () {
     // fast bubbles in home page
     document.querySelectorAll(".bubble path").forEach((item) => {
       this.setBubble(item, 3);
@@ -193,9 +201,20 @@ const setGooeyBubbles = {
       }
       deg += step;
       const rotate = "rotate(" + deg + "deg" + ")";
-      console.log(bubble, rotate);
       utils.changeProperty(bubble, "transform", rotate);
     }, 50);
+  },
+
+  setClass: function () {
+    // fast bubbles in home page
+    document.querySelectorAll(".gooey_bubble").forEach((item) => {
+      // animation set for gooey_bubble_wrapper
+      utils.addClass(item, "gooey_bubble_wrapper");
+    });
+    utils.addClass(
+      document.querySelector(".bubble_slow"),
+      "gooey_bubble_wrapper_slow"
+    );
   },
 };
 
@@ -469,6 +488,35 @@ const createParticles = function (number) {
   for (let index = 0; index < number; index++) {
     const particle = new ParticleFactory();
     particle.create();
+  }
+};
+
+const checkBrowser = function () {
+  // Firefox 1.0+
+  if (typeof InstallTrigger !== "undefined") {
+    return "firefox";
+  }
+  if (
+    /constructor/i.test(window.HTMLElement) ||
+    (function (p) {
+      return p.toString() === "[object SafariRemoteNotification]";
+    })(
+      !window["safari"] ||
+        (typeof safari !== "undefined" && safari.pushNotification)
+    )
+  ) {
+    return "safari";
+  }
+
+  if (/*@cc_on!@*/ false || !!document.documentMode) {
+    return "ie";
+  }
+
+  if (
+    !!window.chrome &&
+    (!!window.chrome.webstore || !!window.chrome.runtime)
+  ) {
+    return "chrome";
   }
 };
 
