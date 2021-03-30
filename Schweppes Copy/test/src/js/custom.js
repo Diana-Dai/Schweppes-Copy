@@ -90,6 +90,7 @@ const scroll = {
       end: 0.3,
       enterFunc: function () {
         utils.show(".c-festive");
+        utils.changeProperty("--bg-color", "#ffe500");
       },
       leaveFunc: function () {
         utils.hide(".c-festive");
@@ -156,20 +157,11 @@ class ScrollHandler {
 
     // when elemtop + starty <=0, start the animation
     // when elemtop + endY >=0, start the animation
-    if (info.enterBackFunc) {
-      if (startY + elemTop >= 0) {
-        info.enterBackFunc();
-      } else if (startY + elemTop <= 0 && endY + elemTop >= 0) {
-        info.enterFunc();
-      } else {
-        info.leaveFunc();
-      }
+
+    if (startY + elemTop <= 0 && endY + elemTop >= 0) {
+      info.enterFunc();
     } else {
-      if (startY + elemTop <= 0 && endY + elemTop >= 0) {
-        info.enterFunc();
-      } else {
-        info.leaveFunc();
-      }
+      info.leaveFunc();
     }
   }
   getTriggerPos(triggerTarget, pos) {
