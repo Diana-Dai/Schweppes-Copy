@@ -156,10 +156,20 @@ class ScrollHandler {
 
     // when elemtop + starty <=0, start the animation
     // when elemtop + endY >=0, start the animation
-    if (startY + elemTop <= 0 && endY + elemTop >= 0) {
-      info.enterFunc();
+    if (info.enterBackFunc) {
+      if (startY + elemTop >= 0) {
+        info.enterBackFunc();
+      } else if (startY + elemTop <= 0 && endY + elemTop >= 0) {
+        info.enterFunc();
+      } else {
+        info.leaveFunc();
+      }
     } else {
-      info.leaveFunc();
+      if (startY + elemTop <= 0 && endY + elemTop >= 0) {
+        info.enterFunc();
+      } else {
+        info.leaveFunc();
+      }
     }
   }
   getTriggerPos(triggerTarget, pos) {
@@ -289,7 +299,6 @@ const setDropdownBtns = {
 };
 
 // product-dropdown
-
 class DropdownAnimation {
   constructor(dropdownClass) {
     this.dropdownClass = dropdownClass;
@@ -402,6 +411,7 @@ const dropdownUtils = {
     parentNode.appendChild(childNode);
   },
 };
+
 (function () {
   window.addEventListener("load", (e) => {
     // Show the title Never Still
@@ -426,6 +436,4 @@ const dropdownUtils = {
   );
   dropdown1Animation.init();
   dropdown2Animation.init();
-  // hoverDropdown1Elem.init();
-  // hoverDropdown2Elem.init();
 })();
