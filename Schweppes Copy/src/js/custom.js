@@ -105,7 +105,7 @@ const scroll = {
 
     document.querySelectorAll(".c-scroll section").forEach((item, i) => {
       const titleTag = item.querySelector(".c-title");
-      const bubbleTag = item.querySelector(".img_mask");
+      const bubbleTag = item.querySelector(".c-content");
       const buttonTag = item.querySelector(".c-title a");
 
       const startY = -0.11 + i * 0.17;
@@ -136,6 +136,7 @@ const scroll = {
         },
         leaveFunc: function () {
           utils.hide(buttonTag);
+          utils.hide(bubbleTag);
         },
       });
     });
@@ -208,8 +209,10 @@ const setGooeyBubbles = {
   setClass: function () {
     // fast bubbles in home page
     document.querySelectorAll(".gooey_bubble").forEach((item) => {
-      // animation set for gooey_bubble_wrapper
-      utils.addClass(item, "gooey_bubble_wrapper");
+      // animation set for gooey_bubble_wrapper except c-festive bubble
+      if (item.parentNode.parentNode.classList[0] !== "c-festive") {
+        utils.addClass(item, "gooey_bubble_wrapper");
+      }
     });
     utils.addClass(
       document.querySelector(".bubble_slow"),
