@@ -5,6 +5,7 @@ const ImageminPlugin = require("imagemin-webpack-plugin").default;
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const OptimizeCssAssetsWebpackPlugin = require("optimize-css-assets-webpack-plugin");
+const CompressionWebpackPlugin = require("compression-webpack-plugin");
 
 // process.env.NODE_ENV = 'development';
 
@@ -87,6 +88,15 @@ module.exports = {
       filename: "css/main.[contenthash:10].css",
     }),
     new OptimizeCssAssetsWebpackPlugin(),
+    new CompressionWebpackPlugin({
+      filename: "[path][base].gz",
+      algorithm: "gzip",
+      test: /\.(js|css|html)$/,
+      // 只处理大于xx字节 的文件，默认：0
+      // threshold: 10240,
+      // 示例：一个1024b大小的文件，压缩后大小为768b，minRatio : 0.75
+      minRatio: 0.8, // 默认: 0.8
+    }),
   ],
   mode: "production",
   devServer: {
