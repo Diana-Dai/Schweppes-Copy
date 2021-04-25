@@ -78,10 +78,15 @@ module.exports = {
     }),
     // compress images
     new ImageminPlugin({
-      pngquant: {
-        quality: "95-100",
-      },
-      plugins: [imageminMozjpeg({ quality: 60 })],
+      pngquant: { quality: "5-10" }, // 推荐: 65-80
+
+      plugins: [
+        imageminMozjpeg({
+          quality: 85,
+          // progressive loading
+          progressive: true,
+        }),
+      ],
     }),
     new MiniCssExtractPlugin({
       // 对输出的css文件进行重命名
@@ -92,7 +97,6 @@ module.exports = {
       filename: "[path][base].gz",
       algorithm: "gzip",
       test: /\.(js|css|html)$/,
-      // 只处理大于xx字节 的文件，默认：0
       // threshold: 10240,
       // 示例：一个1024b大小的文件，压缩后大小为768b，minRatio : 0.75
       minRatio: 0.8, // 默认: 0.8

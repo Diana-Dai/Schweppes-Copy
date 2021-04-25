@@ -1,7 +1,7 @@
 module.exports = {
   // Optimize the size of tailwind css file
   purge: {
-    enabled: false,
+    enabled: true,
     content: ["./src/*.html"],
   },
   darkMode: false,

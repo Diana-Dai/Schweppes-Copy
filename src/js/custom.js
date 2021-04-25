@@ -57,7 +57,7 @@ const scroll = {
     this.setHomeElem();
     this.setStillElem();
     this.setFestiveElem();
-    this.setScrollElems();
+    this.setCScrollElems();
   },
   setHomeElem: () => {
     const homeTrigger = new ScrollHandler(".c-home");
@@ -99,7 +99,7 @@ const scroll = {
       },
     });
   },
-  setScrollElems: () => {
+  setCScrollElems: () => {
     // C-scroll elements
     const scrollElemTrigger = new ScrollHandler(".c-scroll");
 
@@ -108,13 +108,17 @@ const scroll = {
       const bubbleTag = item.querySelector(".c-content");
       const buttonTag = item.querySelector(".c-title a");
 
+      // Start the animation at the -0.11 point of 'c-scroll' elemnt
+      // Add 0.17 when change the section
       const startY = -0.11 + i * 0.17;
       const endY = startY + 0.17;
 
+      // The animation point of the button
       const showButtonStartY = startY + 0.074;
 
       const color = titleTag.getAttribute("data-bg-color");
 
+      // Background and title animation
       scrollElemTrigger.addAnimation({
         start: startY,
         end: endY,
@@ -127,6 +131,7 @@ const scroll = {
         },
       });
 
+      // Button animation
       scrollElemTrigger.addAnimation({
         start: showButtonStartY,
         end: endY,
@@ -207,13 +212,13 @@ const setGooeyBubbles = {
   },
 
   setClass: function () {
-    // fast bubbles in home page
+    // Fast bubbles in home page
     document.querySelectorAll(".gooey_bubble").forEach((item) => {
-      // animation set for gooey_bubble_wrapper except c-festive bubble
       if (item.parentNode.parentNode.classList[0] !== "c-festive") {
         utils.addClass(item, "gooey_bubble_wrapper");
       }
     });
+    // Slow bubbles in home page
     utils.addClass(
       document.querySelector(".bubble_slow"),
       "gooey_bubble_wrapper_slow"
@@ -478,6 +483,7 @@ class ParticleFactory {
   }
   setSpeed(newNode) {
     const speed = this.randomNum(1, 5);
+
     utils.changeProperty(newNode, "--time", 20 / speed + "s");
     utils.changeProperty(newNode, "--distance", 20 * speed + "px");
     return speed;
@@ -545,6 +551,7 @@ const checkBrowser = function () {
   const dropdown2Animation = new DropdownAnimation(
     new MoodDropdown("#dropdown2")
   );
+
   dropdown1Animation.init();
   dropdown2Animation.init();
 
