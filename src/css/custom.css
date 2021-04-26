@@ -169,6 +169,9 @@ body {
 
 /* scroll elements */
 .c-title {
+  z-index: -1;
+}
+.c-title.is_active {
   z-index: 2;
 }
 .c-home .letter_wrapper,
@@ -302,10 +305,12 @@ body {
 .c-title a {
   transition: 0.3s linear;
   opacity: 0;
+  visibility: hidden;
 }
 
 .c-title a.is_active {
   opacity: 1;
+  visibility: visible;
 }
 
 .c-title .letter {
