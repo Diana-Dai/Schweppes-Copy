@@ -6,7 +6,8 @@ The goal is to make a animated website for soft drinks, including gooey bubbles 
 
 I spent two weeks to make the website and speed up the website.
 
-Click the here[shorturl.at/rtGOY] to check the website.
+Click [HERE](https://diana-dai.github.io/Schweppes-Copy/build/index.html) to see the demo
+
 
 This website is built with
 
