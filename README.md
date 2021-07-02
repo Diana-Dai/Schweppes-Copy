@@ -6,7 +6,7 @@ The goal is to make a animated website for soft drinks, including gooey bubbles 
 
 I spent two weeks to make the website and speed up the website.
 
-Click the here[http://shorturl.at/ghluU] to check the website.
+Click the here[shorturl.at/rtGOY] to check the website.
 
 This website is built with
 
