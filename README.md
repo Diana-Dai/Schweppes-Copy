@@ -9,8 +9,8 @@ Click [HERE](https://diana-dai.github.io/Schweppes-Copy/build/index.html) to see
 
 This website is built with
 
-VueJS
-Webpack
-Javascript
-CSS 
-HTML
+-VueJS
+-Webpack
+-Javascript
+-CSS 
+-HTML
